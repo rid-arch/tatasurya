@@ -1,0 +1,66 @@
+    import flash.display.MovieClip;
+    import flash.events.Event;
+    import flash.events.MouseEvent;
+     
+    var gameAktif:Boolean = true;
+     
+    function aturPlanet(center:MovieClip, ob:MovieClip, r1:int, r2:int,kecepatan:Number):void{
+    	ob.r1 = r1;
+    	ob.r2 = r2;
+    	ob.kecepatan = kecepatan;
+    	ob.center = center;
+    	ob.sudut = Math.random()*360;
+    	ob.addEventListener(Event.ENTER_FRAME, gerakElips);
+    	ob.addEventListener(MouseEvent.MOUSE_OVER, stopPlanet);
+    	ob.addEventListener(MouseEvent.MOUSE_OUT, jalankanPlanet);
+    	ob.addEventListener(MouseEvent.CLICK, infoPlanet);
+    }
+     
+    function infoPlanet(e:MouseEvent):void{
+    	var namaPlanet:String = e.currentTarget.name;
+    	infoMC.visible = true;
+    	if (namaPlanet == "merkuriusMC") infoMC.gotoAndStop(1);
+    	if (namaPlanet == "venusMC") infoMC.gotoAndStop(2);
+    	if (namaPlanet == "bumiMC") infoMC.gotoAndStop(3);
+    	if (namaPlanet == "marsMC") infoMC.gotoAndStop(4);
+    	if (namaPlanet == "yupiterMC") infoMC.gotoAndStop(5);
+    	if (namaPlanet == "saturnusMC") infoMC.gotoAndStop(6);
+    	if (namaPlanet == "bulanMC") infoMC.gotoAndStop(7);
+    }
+     
+    function stopPlanet(e:MouseEvent):void{
+    	gameAktif = false;
+    }
+     
+    function jalankanPlanet(e:MouseEvent):void{
+    	gameAktif = true;
+    }
+     
+    function gerakElips(e:Event):void{
+    	if (gameAktif){
+    		var ob:Object = e.currentTarget;
+    		ob.sudut+=ob.kecepatan;
+    		ob.x = ob.center.x + ob.r1*Math.cos(ob.sudut*Math.PI/180);
+    		ob.y = ob.center.y + ob.r2*Math.sin(ob.sudut*Math.PI/180);
+    	}
+    }
+     
+    function setup():void{
+    	aturPlanet(matahariMC, merkuriusMC, 70, 40, 0.3);
+    	aturPlanet(matahariMC, venusMC, 110, 60, 0.25);
+    	aturPlanet(matahariMC, bumiMC, 150, 90, 0.35);
+    	aturPlanet(bumiMC, bulanMC, 30, 20, 5);
+    	aturPlanet(matahariMC, marsMC, 200, 120, 0.38);
+    	aturPlanet(matahariMC, yupiterMC, 260, 160, 0.2);
+    	aturPlanet(matahariMC, saturnusMC, 330, 200, 0.2);
+    	//atur info
+    	infoMC.visible = false;
+    	infoMC.homeBtn.addEventListener(MouseEvent.CLICK, tutupInfo);	
+    }
+     
+    function tutupInfo(e:MouseEvent):void{
+    	infoMC.visible = false;
+    	gameAktif = true;
+    }
+     
+    setup();
